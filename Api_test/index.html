@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translate Test to Zulu</title>
+</head>
+<body>
+    <h1>Translate to Zulu Test</h1>
+    <p>Enter text in English to translate into Zulu:</p>
+    <input type="text" id="inputText" value="Hello, how can I apply to university?">
+    <button onclick="translateText()">Translate</button>
+    <p id="output"></p>
+
+    <script>
+        function translateText() {
+            const inputText = document.getElementById('inputText').value;
+            const fromLang = 'en';  // English
+            const toLang = 'zu';    // Zulu
+            const apiKey = '4a003cec64msh637ccde1edc67b8p14b3e3jsnc491a9d60cc6';  // Replace with your actual API key
+
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener('readystatechange', function () {
+                if (this.readyState === this.DONE) {
+                    if (this.status === 200) {
+                        const response = JSON.parse(this.responseText);
+                        document.getElementById('output').innerText = 'Translation: ' + response.translatedText;
+                    } else {
+                        document.getElementById('output').innerText = 'Error: ' + this.status + ' ' + this.responseText;
+                    }
+                }
+            });
+
+            xhr.open('GET', `https://translate-all-languages.p.rapidapi.com/translate?fromLang=${fromLang}&toLang=${toLang}&text=${encodeURIComponent(inputText)}`);
+            xhr.setRequestHeader('x-rapidapi-key', apiKey);
+            xhr.setRequestHeader('x-rapidapi-host', 'translate-all-languages.p.rapidapi.com');
+
+            xhr.send(null);
+        }
+    </script>
+</body>
+</html>
